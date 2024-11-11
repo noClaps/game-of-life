@@ -1,0 +1,30 @@
+:root {
+    color-scheme: dark light;
+    font-family: system-ui;
+}
+
+body {
+    height: 100dvh;
+    width: 100dvw;
+    margin: 0;
+}
+
+header {
+    text-align: center;
+}
+
+table {
+    margin: auto;
+    -webkit-border-horizontal-spacing: 0;
+    -webkit-border-vertical-spacing: 0;
+}
+
+td {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+}
+
+.alive {
+    background-color: canvastext;
+}
