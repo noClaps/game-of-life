@@ -2,13 +2,13 @@
   "name": "conway",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "^1.1.13"
+    "@types/bun": "^1.1.14"
   },
   "peerDependencies": {
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   },
   "scripts": {
-    "build": "bun run scripts/build.ts",
-    "dev": "bun run build && bunx serve -n dist"
+    "build": "bun scripts/build.ts",
+    "dev": "bun scripts/dev.ts"
   }
 }
