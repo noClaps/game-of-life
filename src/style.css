@@ -9,6 +9,11 @@ body {
     margin: 0;
 }
 
+main {
+    height: 100%;
+    width: 100%;
+}
+
 header {
     text-align: center;
 }
@@ -20,11 +25,74 @@ table {
 }
 
 td {
-    width: 8px;
-    height: 8px;
+    width: 16px;
+    height: 16px;
     padding: 0;
 }
 
 .alive {
     background-color: canvastext;
+}
+
+menu {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: oklch(from canvas l c h / 75%);
+    backdrop-filter: blur(0.5rem);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 0.125rem solid canvastext;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    button {
+        display: flex;
+        justify-content: center;
+        appearance: none;
+        background-color: canvas;
+        color: canvastext;
+        font-size: 1rem;
+        border: none;
+        width: 100%;
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 0.25rem;
+        outline: 0.125rem solid transparent;
+        transition: outline 0.25s;
+
+        &:hover {
+            outline: 0.125rem solid canvastext;
+        }
+    }
+}
+
+label {
+    cursor: pointer;
+
+    svg {
+        vertical-align: middle;
+    }
+
+    input {
+        display: none;
+    }
+
+    &:has(input:checked) {
+        .play {
+            display: none;
+        }
+        .pause {
+            display: block;
+        }
+    }
+
+    .play {
+        display: block;
+    }
+    .pause {
+        display: none;
+    }
 }
