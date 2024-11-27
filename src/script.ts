@@ -168,11 +168,13 @@ function main() {
     // Play/pause keybind <space>
     if (ev.key === " ") {
       if (!paused) {
+        playPause.checked = false;
         paused = true;
         clearInterval(timer);
         drawBoard(board, true); // Set event listeners again
         return;
       }
+      playPause.checked = true;
       paused = false;
       board = readBoard();
       timer = setInterval(() => {
