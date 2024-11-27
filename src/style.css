@@ -52,7 +52,7 @@ menu {
         display: flex;
         justify-content: center;
         appearance: none;
-        background-color: canvas;
+        background-color: transparent;
         color: canvastext;
         font-size: 1rem;
         border: none;
@@ -60,17 +60,29 @@ menu {
         padding: 0.5rem;
         cursor: pointer;
         border-radius: 0.25rem;
-        outline: 0.125rem solid transparent;
-        transition: outline 0.25s;
+        transition:
+            background-color 0.25s,
+            color 0.25s;
 
         &:hover {
-            outline: 0.125rem solid canvastext;
+            background-color: canvastext;
+            color: canvas;
         }
     }
 }
 
 label {
     cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition:
+        background-color 0.25s,
+        color 0.25s;
+
+    &:hover {
+        background-color: canvastext;
+        color: canvas;
+    }
 
     svg {
         vertical-align: middle;
