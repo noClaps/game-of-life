@@ -7,6 +7,6 @@
   },
   "scripts": {
     "build": "bun build src/index.html --outdir dist",
-    "dev": "bun scripts/dev.ts"
+    "dev": "bun src/index.html"
   }
 }
