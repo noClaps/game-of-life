@@ -2,7 +2,7 @@
   "name": "conway",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "^1.2.1",
+    "@types/bun": "^1.2.4",
     "typescript": "^5.7.3"
   },
   "scripts": {
