@@ -7,7 +7,7 @@ This is an implementation of Conway's Game of Life, running in the browser.
 1. Clone the repository.
 
    ```sh
-   git clone https://gitlab.com/noClaps/game-of-life.git
+   git clone https://github.com/noClaps/game-of-life.git
    cd game-of-life
    ```
 
