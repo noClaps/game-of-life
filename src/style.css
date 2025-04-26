@@ -20,6 +20,7 @@ header {
 
 table {
     margin: auto;
+    border-collapse: collapse;
     -webkit-border-horizontal-spacing: 0;
     -webkit-border-vertical-spacing: 0;
 }
