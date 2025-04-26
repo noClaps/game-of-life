@@ -2,30 +2,28 @@ const WIDTH = Math.floor(innerWidth / 16);
 const HEIGHT = Math.floor(innerHeight / 16);
 const THRESHOLD = 0.75;
 
-function createBoard(type: "random" | "blank"): (0 | 1)[][] {
+function createBoard(type: "random" | "blank"): boolean[][] {
   switch (type) {
     case "random":
       return new Array(HEIGHT)
-        .fill(0)
+        .fill(false)
         .map(() =>
-          new Array<0 | 1>(WIDTH)
-            .fill(0)
-            .map(() => (Math.random() > THRESHOLD ? 1 : 0)),
+          new Array(WIDTH).fill(false).map(() => Math.random() > THRESHOLD),
         );
     case "blank":
       return new Array(HEIGHT)
-        .fill(0)
-        .map(() => new Array<0 | 1>(WIDTH).fill(0));
+        .fill(false)
+        .map(() => new Array(WIDTH).fill(false));
   }
 }
 
-function readBoard(): (0 | 1)[][] {
+function readBoard(): boolean[][] {
   const trows = document.querySelectorAll("tr")!;
-  const board: (0 | 1)[][] = [];
+  const board: boolean[][] = [];
 
   for (const tr of Array.from(trows)) {
-    const boardRow: (0 | 1)[] = Array.from(tr.cells).map((td) =>
-      td.classList.contains("alive") ? 1 : 0,
+    const boardRow = Array.from(tr.cells).map((td) =>
+      td.classList.contains("alive"),
     );
     board.push(boardRow);
   }
@@ -33,14 +31,14 @@ function readBoard(): (0 | 1)[][] {
   return board;
 }
 
-function drawBoard(board: (0 | 1)[][], initial: boolean = false) {
+function drawBoard(board: boolean[][], initial: boolean = false) {
   const main = document.querySelector("main")!;
 
   let boardHtml = "<table>";
   for (let row = 0; row < board.length; row++) {
     boardHtml += "<tr>";
     for (let column = 0; column < board[row].length; column++) {
-      if (board[row][column] === 1) {
+      if (board[row][column]) {
         boardHtml += `<td class="alive"></td>`;
       } else {
         boardHtml += `<td></td>`;
@@ -62,45 +60,44 @@ function drawBoard(board: (0 | 1)[][], initial: boolean = false) {
   }
 }
 
-function advanceStep(board: (0 | 1)[][]) {
+function advanceStep(board: boolean[][]) {
   const newBoard = structuredClone(board);
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[row].length; col++) {
       let neighbors = 0;
       // Check north
-      if (row - 1 >= 0 && board[row - 1][col] === 1) neighbors++;
+      if (row - 1 >= 0 && board[row - 1][col]) neighbors++;
 
       // Check northeast
-      if (row - 1 >= 0 && col + 1 < WIDTH && board[row - 1][col + 1] === 1)
+      if (row - 1 >= 0 && col + 1 < WIDTH && board[row - 1][col + 1])
         neighbors++;
 
       // Check east
-      if (col + 1 < WIDTH && board[row][col + 1] === 1) neighbors++;
+      if (col + 1 < WIDTH && board[row][col + 1]) neighbors++;
 
       // Check southeast
-      if (row + 1 < HEIGHT && col + 1 < WIDTH && board[row + 1][col + 1] === 1)
+      if (row + 1 < HEIGHT && col + 1 < WIDTH && board[row + 1][col + 1])
         neighbors++;
 
       // Check south
-      if (row + 1 < HEIGHT && board[row + 1][col] === 1) neighbors++;
+      if (row + 1 < HEIGHT && board[row + 1][col]) neighbors++;
 
       // Check southwest
-      if (row + 1 < HEIGHT && col - 1 >= 0 && board[row + 1][+col - 1] === 1)
+      if (row + 1 < HEIGHT && col - 1 >= 0 && board[row + 1][+col - 1])
         neighbors++;
 
       // Check west
-      if (col - 1 >= 0 && board[row][col - 1] === 1) neighbors++;
+      if (col - 1 >= 0 && board[row][col - 1]) neighbors++;
 
       // Check northwest
-      if (row - 1 >= 0 && col - 1 >= 0 && board[row - 1][col - 1] === 1)
-        neighbors++;
+      if (row - 1 >= 0 && col - 1 >= 0 && board[row - 1][col - 1]) neighbors++;
 
       // Fewer than 2 neighbors, dies
-      if (neighbors < 2) newBoard[row][col] = 0;
+      if (neighbors < 2) newBoard[row][col] = false;
       // More than 3 neighbors, dies
-      if (neighbors > 3) newBoard[row][col] = 0;
+      if (neighbors > 3) newBoard[row][col] = false;
       // Exactly 3 neighbors, dead cell becomes alive
-      if (neighbors === 3) newBoard[row][col] = 1;
+      if (neighbors === 3) newBoard[row][col] = true;
     }
   }
 
