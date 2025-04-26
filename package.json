@@ -6,7 +6,7 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "build": "bun build src/index.html --outdir dist --minify",
-    "dev": "bun src/index.html"
+    "build": "bunx vite build src --outDir dist --emptyOutDir",
+    "dev": "bunx vite src"
   }
 }
