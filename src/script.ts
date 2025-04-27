@@ -113,7 +113,7 @@ function main() {
   drawBoard(board, true);
 
   // Timer for setInterval() and clearInterval()
-  let timer: Timer;
+  let timer: number;
 
   // Clear board (sets board to edit mode)
   const clearButton = document.querySelector<HTMLButtonElement>("#clear")!;
