@@ -8,6 +8,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun run build
       - uses: actions/upload-pages-artifact@v3
+        id: deployment
         with:
           path: dist/
 
