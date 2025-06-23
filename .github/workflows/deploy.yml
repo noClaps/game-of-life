@@ -8,11 +8,13 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun run build
       - uses: actions/upload-pages-artifact@v3
-        id: deployment
         with:
           path: dist/
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
