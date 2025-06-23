@@ -11,13 +11,7 @@ This is an implementation of Conway's Game of Life, running in the browser.
    cd game-of-life
    ```
 
-2. Install dependencies.
-
-   ```sh
-   bun install
-   ```
-
-3. Build the site.
+2. Build the site.
 
    ```sh
    bun run build
