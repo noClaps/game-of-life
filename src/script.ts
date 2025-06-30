@@ -2,6 +2,10 @@ const WIDTH = Math.floor(innerWidth / 16);
 const HEIGHT = Math.floor(innerHeight / 16);
 const THRESHOLD = 0.75;
 
+function mod(a: number, b: number) {
+  return ((a % b) + b) % b;
+}
+
 function createBoard(type: "random" | "blank"): boolean[][] {
   switch (type) {
     case "random":
@@ -66,31 +70,21 @@ function advanceStep(board: boolean[][]) {
     for (let col = 0; col < board[row].length; col++) {
       let neighbors = 0;
       // Check north
-      if (row - 1 >= 0 && board[row - 1][col]) neighbors++;
-
+      if (board[mod(row - 1, HEIGHT)][col]) neighbors++;
       // Check northeast
-      if (row - 1 >= 0 && col + 1 < WIDTH && board[row - 1][col + 1])
-        neighbors++;
-
+      if (board[mod(row - 1, HEIGHT)][mod(col + 1, WIDTH)]) neighbors++;
       // Check east
-      if (col + 1 < WIDTH && board[row][col + 1]) neighbors++;
-
+      if (board[row][mod(col + 1, WIDTH)]) neighbors++;
       // Check southeast
-      if (row + 1 < HEIGHT && col + 1 < WIDTH && board[row + 1][col + 1])
-        neighbors++;
-
+      if (board[mod(row + 1, HEIGHT)][mod(col + 1, WIDTH)]) neighbors++;
       // Check south
-      if (row + 1 < HEIGHT && board[row + 1][col]) neighbors++;
-
+      if (board[mod(row + 1, HEIGHT)][col]) neighbors++;
       // Check southwest
-      if (row + 1 < HEIGHT && col - 1 >= 0 && board[row + 1][+col - 1])
-        neighbors++;
-
+      if (board[mod(row + 1, HEIGHT)][mod(col - 1, WIDTH)]) neighbors++;
       // Check west
-      if (col - 1 >= 0 && board[row][col - 1]) neighbors++;
-
+      if (board[row][mod(col - 1, WIDTH)]) neighbors++;
       // Check northwest
-      if (row - 1 >= 0 && col - 1 >= 0 && board[row - 1][col - 1]) neighbors++;
+      if (board[mod(row - 1, HEIGHT)][mod(col - 1, WIDTH)]) neighbors++;
 
       // Fewer than 2 neighbors, dies
       if (neighbors < 2) newBoard[row][col] = false;
