@@ -6,43 +6,46 @@ function mod(a: number, b: number) {
   return ((a % b) + b) % b;
 }
 
-function createBoard(type: "random" | "blank"): boolean[][] {
-  switch (type) {
-    case "random":
-      return new Array(HEIGHT)
-        .fill(false)
-        .map(() =>
-          new Array(WIDTH).fill(false).map(() => Math.random() > THRESHOLD),
-        );
-    case "blank":
-      return new Array(HEIGHT)
-        .fill(false)
-        .map(() => new Array(WIDTH).fill(false));
-  }
+function index(r: number, c: number) {
+  return r * WIDTH + c;
 }
 
-function readBoard(): boolean[][] {
-  const trows = document.querySelectorAll("tr")!;
-  const board: boolean[][] = [];
+function readBoard(): Uint8Array {
+  const trows = document.querySelectorAll("tr");
+  const board = new Uint8Array(HEIGHT * WIDTH);
 
-  for (const tr of Array.from(trows)) {
-    const boardRow = Array.from(tr.cells).map((td) =>
-      td.classList.contains("alive"),
-    );
-    board.push(boardRow);
+  for (let r = 0; r < trows.length; r++) {
+    for (let c = 0; c < trows[r].cells.length; c++) {
+      board[index(r, c)] = trows[r].cells[c].className === "alive" ? 1 : 0;
+    }
   }
 
   return board;
 }
 
-function drawBoard(board: boolean[][], initial: boolean = false) {
+function createBoard(type: "random" | "blank"): Uint8Array {
+  switch (type) {
+    case "random": {
+      const arr = new Uint8Array(HEIGHT * WIDTH);
+      for (const i in arr) {
+        arr[i] = Math.random() > THRESHOLD ? 1 : 0;
+      }
+      return arr;
+    }
+    case "blank": {
+      return new Uint8Array(HEIGHT * WIDTH);
+    }
+  }
+}
+
+function drawBoard(board: Uint8Array, initial = false) {
   const main = document.querySelector("main")!;
 
   let boardHtml = "<table>";
-  for (let row = 0; row < board.length; row++) {
+  for (let r = 0; r < HEIGHT; r++) {
     boardHtml += "<tr>";
-    for (let column = 0; column < board[row].length; column++) {
-      if (board[row][column]) {
+    for (let c = 0; c < WIDTH; c++) {
+      if (board[index(r, c)] === 1) {
         boardHtml += `<td class="alive"></td>`;
       } else {
         boardHtml += `<td></td>`;
@@ -64,34 +67,34 @@ function drawBoard(board: boolean[][], initial: boolean = false) {
   }
 }
 
-function advanceStep(board: boolean[][]) {
+function advanceStep(board: Uint8Array) {
   const newBoard = structuredClone(board);
-  for (let row = 0; row < board.length; row++) {
-    for (let col = 0; col < board[row].length; col++) {
+  for (let r = 0; r < HEIGHT; r++) {
+    for (let c = 0; c < WIDTH; c++) {
       let neighbors = 0;
       // Check north
-      if (board[mod(row - 1, HEIGHT)][col]) neighbors++;
+      if (board[index(mod(r - 1, HEIGHT), c)]) neighbors++;
       // Check northeast
-      if (board[mod(row - 1, HEIGHT)][mod(col + 1, WIDTH)]) neighbors++;
+      if (board[index(mod(r - 1, HEIGHT), mod(c + 1, WIDTH))]) neighbors++;
       // Check east
-      if (board[row][mod(col + 1, WIDTH)]) neighbors++;
+      if (board[index(r, mod(c + 1, WIDTH))]) neighbors++;
       // Check southeast
-      if (board[mod(row + 1, HEIGHT)][mod(col + 1, WIDTH)]) neighbors++;
+      if (board[index(mod(r + 1, HEIGHT), mod(c + 1, WIDTH))]) neighbors++;
       // Check south
-      if (board[mod(row + 1, HEIGHT)][col]) neighbors++;
+      if (board[index(mod(r + 1, HEIGHT), c)]) neighbors++;
       // Check southwest
-      if (board[mod(row + 1, HEIGHT)][mod(col - 1, WIDTH)]) neighbors++;
+      if (board[index(mod(r + 1, HEIGHT), mod(c - 1, WIDTH))]) neighbors++;
       // Check west
-      if (board[row][mod(col - 1, WIDTH)]) neighbors++;
+      if (board[index(r, mod(c - 1, WIDTH))]) neighbors++;
       // Check northwest
-      if (board[mod(row - 1, HEIGHT)][mod(col - 1, WIDTH)]) neighbors++;
+      if (board[index(mod(r - 1, HEIGHT), mod(c - 1, WIDTH))]) neighbors++;
 
       // Fewer than 2 neighbors, dies
-      if (neighbors < 2) newBoard[row][col] = false;
+      if (neighbors < 2) newBoard[index(r, c)] = 0;
       // More than 3 neighbors, dies
-      if (neighbors > 3) newBoard[row][col] = false;
+      if (neighbors > 3) newBoard[index(r, c)] = 0;
       // Exactly 3 neighbors, dead cell becomes alive
-      if (neighbors === 3) newBoard[row][col] = true;
+      if (neighbors === 3) newBoard[index(r, c)] = 1;
     }
   }
 
