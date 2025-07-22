@@ -2,7 +2,7 @@
   "name": "conway",
   "type": "module",
   "scripts": {
-    "build": "bunx vite build src --outDir ../dist --emptyOutDir",
-    "dev": "bunx vite src"
+    "build": "bunx rolldown-vite build src --outDir ../dist --emptyOutDir",
+    "dev": "bunx rolldown-vite src"
   }
 }
